@@ -1,6 +1,7 @@
 package com.cinema.models;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import lombok.AllArgsConstructor;
@@ -15,6 +16,8 @@ public class Salle {
 	
 	@Id
 	private String id;
+	private String nom;
+	@DBRef
 	private Cinema cinema;
 	private int place;
 

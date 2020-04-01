@@ -84,10 +84,10 @@ public class SeanceServiceImpl implements SeanceService {
 			}
 			else
 			{
-				//if(salleRempli(sea))
-				//{
-				//	throw new ResponseStatusException(HttpStatus.FORBIDDEN, "le nombre de client de la salle est déjà atteint");
-				//}
+				if(salleRempli(sea))
+				{
+					throw new ResponseStatusException(HttpStatus.FORBIDDEN, "le nombre de client de la salle est déjà atteint");
+				}
 			}	
 			
 			if(client.isPresent())

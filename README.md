@@ -47,3 +47,4 @@ Ajouter la possibilité de noté les films et d'ajouter des commentaires (+1)
 Ajouter la possibilité de trier les films lors des differentes recherches par ordre de notation (+0.5)
 Chercher les films en fonctions de leurs noms (+1)
 Pour avoir 20, le code doit etre PARFAIT!
+
