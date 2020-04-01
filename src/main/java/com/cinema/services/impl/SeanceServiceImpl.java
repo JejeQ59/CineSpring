@@ -78,7 +78,7 @@ public class SeanceServiceImpl implements SeanceService {
 		if(seance.isPresent()) {
 			Optional<Client> client = this.serviceC.findById(cId);
 			sea = seance.get();
-			if(seance.get().getSalle()==null)
+			if(seance.get()==null)
 			{
 				throw new ResponseStatusException(HttpStatus.NOT_FOUND, "la salle n'existe pas");
 			}

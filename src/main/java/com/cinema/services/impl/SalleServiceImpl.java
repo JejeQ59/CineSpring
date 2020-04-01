@@ -21,28 +21,24 @@ public class SalleServiceImpl implements SalleService {
 		return this.repo.save(s);
 	}
 	
-
 	@Override
 	public List<Salle> findAll() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.repo.findAll();
 	}
 
 	@Override
 	public Optional<Salle> findById(String id) {
-		// TODO Auto-generated method stub
-		return null;
+		return this.repo.findById(id);
 	}
 
 	@Override
 	public Salle update(Salle f) {
-		// TODO Auto-generated method stub
-		return null;
+		return this.repo.save(f);
 	}
 
 	@Override
 	public void delete(String id) {
-		// TODO Auto-generated method stub
+		this.repo.deleteById(id);
 		
 	}
 
