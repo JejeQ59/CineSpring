@@ -23,5 +23,6 @@ public interface SeanceService {
 	public List<Seance> findByDateBetween(LocalDateTime min, LocalDateTime max);
 	public float recetteFilm(Film f);
 	public void deleteById(String id);
+	public List<Seance> findAllByFilmGenre(String genre);
 	
 }

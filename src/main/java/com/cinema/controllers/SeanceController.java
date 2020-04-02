@@ -92,7 +92,11 @@ public class SeanceController {
 	}
 	
 	
-	
+	@GetMapping("/genre/{genre}")
+	public List<Seance> findAllByFilmGenre(@PathVariable String genre) {
+		return this.service.findAllByFilmGenre(genre);
+	}
+		
 	
 	
 }

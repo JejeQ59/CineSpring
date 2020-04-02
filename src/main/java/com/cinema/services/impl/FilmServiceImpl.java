@@ -58,6 +58,11 @@ public class FilmServiceImpl implements FilmService {
 	public Optional<Film> findByTitre(String titre) {
 		return this.repo.findAllByTitre(titre);
 	}
+	
+	@Override
+	public List<Film> findAllByGenre(String genre) {
+		return this.repo.findAllByGenre(genre);
+	}
 
 	@Override
 	public float findRecette(String id) {

@@ -328,4 +328,19 @@ public class SeanceServiceImpl implements SeanceService {
 		}
 		return res;
 	}
+
+	@Override
+	public List<Seance> findAllByFilmGenre(String genre) {
+		List<Film> films = this.serviceF.findAllByGenre(genre);
+		if(films!=null)
+		{
+			return this.repo.findAllByFilmIn(films);
+		}
+		else
+		{
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Aucun film n'est du genre : " + genre);
+		}
+	}
+
+	
 }
