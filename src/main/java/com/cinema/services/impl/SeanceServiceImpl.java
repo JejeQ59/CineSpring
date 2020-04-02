@@ -1,9 +1,11 @@
 package com.cinema.services.impl;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.Period;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -229,6 +231,59 @@ public class SeanceServiceImpl implements SeanceService {
 		}
 		
 		return res;
+	}
+
+	//Recherche toutes les seances en fonction du titre du film
+	@Override
+	public List<Seance> findBySeanceByTitreFilm(String titre) {
+		List<Seance> res = this.repo.findAll().stream().filter(sea -> sea.getFilm().getTitre()
+				.equals(titre)).collect(Collectors.toList());
+		return res;
+		
+	}
+
+	//Recherche la recette d'une séance
+	@Override
+	public float findRecetteSeance(String id) {
+		Optional<Seance> s = this.repo.findById(id);
+		float res = 0;
+		
+		if(s.isPresent())
+		{
+			res = (float) s.get().getClients().stream().mapToDouble(se -> se.getPrix()).sum();
+		}
+		else
+		{
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "la seance d'id: " + id + " n'existe pas");
+		}
+		
+		return res;
+	}
+
+	@Override
+	public int findPlacesRestantesSeance(String id) {
+		Optional<Seance> s = this.repo.findById(id);
+		int res = 0;
+		
+		if(s.isPresent())
+		{
+		
+			if(s.get().getSalle()!=null)
+			{
+				res = s.get().getSalle().getPlace() - s.get().getClients().size();
+			}
+		}
+		else
+		{
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "la seance d'id: " + id + " n'existe pas");
+		}
+		
+		return res;
+	}
+
+	@Override
+	public List<Seance> findByDateBetween(LocalDateTime min, LocalDateTime max) {
+		return this.repo.findByDateBetween(min, max);
 	}
 
 

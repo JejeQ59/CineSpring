@@ -50,9 +50,10 @@ public class FilmController {
 		this.service.delete(id);
 	}
 	
-	@GetMapping("{titre}")
-	public Optional<Film> findByTitre(@PathVariable String titre) {
-		return this.service.findByTitre(titre);
+	
+	@GetMapping("/{id}/recette")
+	public float findRecette(@PathVariable String id) {
+		return this.service.findRecette(id);
 	}
 	
 }

@@ -13,5 +13,6 @@ public interface FilmService {
 	public Film update(Film f);
 	public void delete(String id);
 	public Optional<Film> findByTitre(String titre);
-
+	public float findRecette(String id);
+	
 }

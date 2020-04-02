@@ -8,7 +8,6 @@ import com.cinema.models.Cinema;
 import com.cinema.models.Salle;
 import com.cinema.repositories.CinemaRepository;
 import com.cinema.services.CinemaDTOService;
-import com.cinema.services.CinemaService;
 import com.cinema.services.SalleService;
 
 @Service

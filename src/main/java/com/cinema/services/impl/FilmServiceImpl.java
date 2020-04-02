@@ -47,6 +47,14 @@ public class FilmServiceImpl implements FilmService {
 		return this.repo.findAllByTitre(titre);
 	}
 
+	@Override
+	public float findRecette(String id) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	
+	
+
 	
 	
 	

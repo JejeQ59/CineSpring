@@ -1,5 +1,6 @@
 package com.cinema.controllers;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.cinema.models.Film;
 import com.cinema.models.Seance;
 import com.cinema.services.SeanceService;
 
@@ -64,5 +66,27 @@ public class SeanceController {
 	public Seance addSalle(@PathVariable String sId, @PathVariable String saId) {
 		return this.service.addSalle(sId, saId);
 	}
+	
+	@GetMapping("/titre/{titre}")
+	public List<Seance> findSeanceByTitreFilm(@PathVariable String titre) {
+		return this.service.findBySeanceByTitreFilm(titre);
+	}
+	
+	@GetMapping("/{id}/recette")
+	public float findRecetteSeance(@PathVariable String id) {
+		return this.service.findRecetteSeance(id);
+	}
+	
+	@GetMapping("/{id}/places")
+	public int findPlacesRestantesSeance(@PathVariable String id) {
+		return this.service.findPlacesRestantesSeance(id);
+	}
+	
+	@GetMapping("/horaires/{min}/{max}")
+	public List<Seance> findByDateBetween(@PathVariable LocalDateTime min, @PathVariable LocalDateTime max) {
+		return this.service.findByDateBetween(min, max);
+	}
+	
+	
 	
 }
