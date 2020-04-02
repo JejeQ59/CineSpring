@@ -11,6 +11,7 @@ public interface ClientService {
 	public List<Client> findAll();
 	public Optional<Client> findById(String id);
 	public Client update(Client c);
-	public void delete(String id);
+	public void deleteById(String id);
+	public void delete(Client c);
 
 }

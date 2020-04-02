@@ -37,8 +37,14 @@ public class ClientServiceImpl implements ClientService {
 	}
 
 	@Override
-	public void delete(String id) {
+	public void deleteById(String id) {
 		 this.repo.deleteById(id);
+		
+	}
+	
+	@Override
+	public void delete(Client c) {
+		 this.repo.delete(c);
 		
 	}
 	

@@ -11,8 +11,9 @@ public interface FilmService {
 	public List<Film> findAll();
 	public Optional<Film> findById(String id);
 	public Film update(Film f);
-	public void delete(String id);
+	public void delete(Film f);
 	public Optional<Film> findByTitre(String titre);
 	public float findRecette(String id);
+	public void deleteById(String id);
 	
 }

@@ -47,8 +47,13 @@ public class SeanceController {
 	}
 
 	@DeleteMapping("{id}")
-	public void delete(@RequestBody @PathVariable String id) {
-		this.service.delete(id);
+	public void deleteById(@RequestBody @PathVariable String id) {
+		this.service.deleteById(id);
+	}
+	
+	@DeleteMapping("")
+	public void delete(@RequestBody Seance s) {
+		this.service.delete(s);
 	}
 	
 	@PutMapping("{sId}/assister/{aId}")
@@ -85,6 +90,8 @@ public class SeanceController {
 	public List<Seance> findByDateBetween(@PathVariable LocalDateTime min, @PathVariable LocalDateTime max) {
 		return this.service.findByDateBetween(min, max);
 	}
+	
+	
 	
 	
 	

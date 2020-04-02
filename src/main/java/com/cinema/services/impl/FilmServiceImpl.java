@@ -4,17 +4,23 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.cinema.models.Film;
 import com.cinema.repositories.FilmRepository;
 import com.cinema.services.FilmService;
+import com.cinema.services.SeanceService;
 
 @Service
 public class FilmServiceImpl implements FilmService {
 
 	@Autowired
 	private FilmRepository repo;
+	
+	@Autowired
+	private SeanceService serviceS;
 
 	@Override
 	public Film save(Film f) {
@@ -37,8 +43,14 @@ public class FilmServiceImpl implements FilmService {
 	}
 
 	@Override
-	public void delete(String id) {
+	public void deleteById(String id) {
 		this.repo.deleteById(id);
+		
+	}
+	
+	@Override
+	public void delete(Film f) {
+		this.repo.delete(f);
 		
 	}
 
@@ -49,8 +61,18 @@ public class FilmServiceImpl implements FilmService {
 
 	@Override
 	public float findRecette(String id) {
-		// TODO Auto-generated method stub
-		return 0;
+		float res=0;
+		Optional<Film> film = this.repo.findById(id);
+		if(film.isPresent())
+		{
+			res = this.serviceS.recetteFilm(film.get());
+		}
+		else
+		{
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "le film d'id: " + id + " n'existe pas");
+		}
+		
+		return res;
 	}
 	
 	

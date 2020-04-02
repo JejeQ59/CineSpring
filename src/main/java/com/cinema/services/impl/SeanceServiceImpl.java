@@ -64,12 +64,20 @@ public class SeanceServiceImpl implements SeanceService {
 	}
 
 	@Override
-	public void delete(String id) {
+	public void deleteById(String id) {
 		this.repo.deleteById(id);
 
 	}
+	
+	@Override
+	public void delete(Seance s) {
+		this.repo.delete(s);
 
-	//Ajout d'un client à une seance
+	}
+
+	/*
+	 * Ajout d'un client à une seance
+	 */
 	@Override
 	public Seance addClient(String sId, String cId) {
 		Seance sea= null;
@@ -122,7 +130,9 @@ public class SeanceServiceImpl implements SeanceService {
 		return sea;
 	}
 
-	//test age du client
+	/*
+	 * test age du client
+	 */
 	private boolean testAge(Seance sea, Client cli) {
 		boolean test = false;
 		if(Period.between(cli.getNaissance(), LocalDate.now()).getYears() 
@@ -143,7 +153,9 @@ public class SeanceServiceImpl implements SeanceService {
 		}
 	}
 
-	//calcul de la reduction en fonction de l'age
+	/*
+	 * calcul de la reduction en fonction de l'age
+	 */
 	private float calculReduction(Client cli) {
 		float reduction = 0;
 		if(cli.isEtudient())
@@ -157,20 +169,22 @@ public class SeanceServiceImpl implements SeanceService {
 		return reduction;
 	}
 
-	//Calcul du prix de la seance pour le client
+	/*
+	 * Calcul du prix de la seance pour le client
+	 */
 	private float calculPrixSeance(Seance seance) {
 
 		float prixBase = 10;
 		float prixFinal;
 
 		switch(seance.getType()) {
-		case "seance 3D":
+		case "3D":
 			prixFinal = prixBase + 3;
 			break;
-		case "seance IMAX":
+		case "IMAX":
 			prixFinal = prixBase + 6;
 			break;
-		case "seance 4DX":
+		case "4DX":
 			prixFinal = prixBase + 8;
 			break;
 		default:
@@ -180,6 +194,9 @@ public class SeanceServiceImpl implements SeanceService {
 		return prixFinal;
 	}
 
+	/*
+	 * Ajout d'un film sur une séance
+	 */
 	@Override
 	public Seance addFilm(String sId, String fId) {
 		Seance res = null;
@@ -207,6 +224,9 @@ public class SeanceServiceImpl implements SeanceService {
 	}
 	
 
+	/*
+	 * Ajout d'une salle dans la seance
+	 */
 	@Override
 	public Seance addSalle(String sId, String saId) {
 		Seance res = null;
@@ -233,16 +253,21 @@ public class SeanceServiceImpl implements SeanceService {
 		return res;
 	}
 
-	//Recherche toutes les seances en fonction du titre du film
+	/*
+	 * Recherche toutes les seances en fonction du titre du film
+	 */
 	@Override
 	public List<Seance> findBySeanceByTitreFilm(String titre) {
-		List<Seance> res = this.repo.findAll().stream().filter(sea -> sea.getFilm().getTitre()
+		List<Seance> res = this.repo.findAll()
+				.stream().filter(sea -> sea.getFilm().getTitre()
 				.equals(titre)).collect(Collectors.toList());
 		return res;
 		
 	}
 
-	//Recherche la recette d'une séance
+	/*
+	 * Recherche la recette d'une séance
+	 */
 	@Override
 	public float findRecetteSeance(String id) {
 		Optional<Seance> s = this.repo.findById(id);
@@ -260,6 +285,9 @@ public class SeanceServiceImpl implements SeanceService {
 		return res;
 	}
 
+	/*
+	 * Recherche le nombre de place restante pour la séance
+	 */
 	@Override
 	public int findPlacesRestantesSeance(String id) {
 		Optional<Seance> s = this.repo.findById(id);
@@ -287,4 +315,17 @@ public class SeanceServiceImpl implements SeanceService {
 	}
 
 
+	/*
+	 * Recherche la recette d'un film sur toutes les seances
+	 */
+	@Override
+	public float recetteFilm(Film f) {
+		float res=0.00f;
+		List<Seance> seance = this.findBySeanceByTitreFilm(f.getTitre());
+		for(Seance s : seance)
+		{
+			res+=(float) s.getClients().stream().mapToDouble(se -> se.getPrix()).sum();
+		}
+		return res;
+	}
 }

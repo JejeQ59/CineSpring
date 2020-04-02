@@ -46,8 +46,13 @@ public class FilmController {
 	}
 
 	@DeleteMapping("{id}")
-	public void delete(@RequestBody @PathVariable String id) {
-		this.service.delete(id);
+	public void deleteById(@RequestBody @PathVariable String id) {
+		this.service.deleteById(id);
+	}
+	
+	@DeleteMapping("")
+	public void delete(@RequestBody Film f) {
+		this.service.delete(f);
 	}
 	
 	
