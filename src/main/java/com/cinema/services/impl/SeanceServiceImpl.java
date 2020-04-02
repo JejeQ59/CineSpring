@@ -342,5 +342,18 @@ public class SeanceServiceImpl implements SeanceService {
 		}
 	}
 
+	@Override
+	public List<Seance> findAllByFilmAgeLimite(int age) {
+		List<Film> films = this.serviceF.findAllByAgeLimite(age);
+		if(!films.isEmpty())
+		{
+			return this.repo.findAllByFilmIn(films);
+		}
+		else
+		{
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Aucun film n'a d'âge limite à : " + age + " ans");
+		}
+	}
+
 	
 }

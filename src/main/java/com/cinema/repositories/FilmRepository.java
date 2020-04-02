@@ -10,5 +10,6 @@ public interface FilmRepository extends MongoRepository<Film, String> {
 	
 	public Optional<Film> findAllByTitre(String titre);
 	public List<Film> findAllByGenre(String genre);
+	public List<Film> findAllByAgeLimite(int age);
 
 }

@@ -16,5 +16,6 @@ public interface FilmService {
 	public float findRecette(String id);
 	public void deleteById(String id);
 	public List<Film> findAllByGenre(String genre);
+	public List<Film> findAllByAgeLimite(int age);
 	
 }

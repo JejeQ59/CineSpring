@@ -96,6 +96,11 @@ public class SeanceController {
 	public List<Seance> findAllByFilmGenre(@PathVariable String genre) {
 		return this.service.findAllByFilmGenre(genre);
 	}
+	
+	@GetMapping("/age/{age}")
+	public List<Seance> findAllByFilmAgeLimite(@PathVariable int age) {
+		return this.service.findAllByFilmAgeLimite(age);
+	}
 		
 	
 	
