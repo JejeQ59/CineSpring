@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.cinema.models.Film;
 import com.cinema.models.Seance;
 import com.cinema.services.SeanceService;
 
@@ -52,17 +51,17 @@ public class SeanceController {
 		this.service.delete(id);
 	}
 	
-	@PutMapping("addClientSeance/{sId}/clients/{aId}")
+	@PutMapping("{sId}/assister/{aId}")
 	public Seance addClient(@PathVariable String sId, @PathVariable String aId) {
 		return this.service.addClient(sId, aId);
 	}
 	
-	@PutMapping("addfilm/{sId}/films/{fId}")
+	@PutMapping("{sId}/films/{fId}")
 	public Seance addFilm(@PathVariable String sId, @PathVariable String fId) {
 		return this.service.addFilm(sId, fId);
 	}
 	
-	@PutMapping("addSalle/{sId}/salles/{saId}")
+	@PutMapping("{sId}/salles/{saId}")
 	public Seance addSalle(@PathVariable String sId, @PathVariable String saId) {
 		return this.service.addSalle(sId, saId);
 	}
