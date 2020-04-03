@@ -74,7 +74,7 @@ public class SeanceController {
 	
 	@GetMapping("/titre/{titre}")
 	public List<Seance> findSeanceByTitreFilm(@PathVariable String titre) {
-		return this.service.findBySeanceByTitreFilm(titre);
+		return this.service.findBySeanceByTitreFilmLike(titre);
 	}
 	
 	@GetMapping("/{id}/recette")
@@ -101,11 +101,6 @@ public class SeanceController {
 	@GetMapping("/age/{age}")
 	public List<Seance> findAllByFilmAgeLimite(@PathVariable int age) {
 		return this.service.findAllByFilmAgeLimite(age);
-	}
-		
-	@GetMapping("/type/{type}")
-	public List<Seance> findAllByType(@PathVariable String type) {
-		return this.service.findAllByType(type);
 	}
 	
 	@GetMapping("/recherche")

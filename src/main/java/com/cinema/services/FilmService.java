@@ -12,7 +12,7 @@ public interface FilmService {
 	public Optional<Film> findById(String id);
 	public Film update(Film f);
 	public void delete(Film f);
-	public Optional<Film> findByTitre(String titre);
+	public List<Film> findByTitreLike(String titre);
 	public float findRecette(String id);
 	public void deleteById(String id);
 	public List<Film> findAllByGenre(String genre);

@@ -18,7 +18,6 @@ public interface SeanceService {
 	public Seance addClient(String sid, String cid);
 	public Seance addFilm(String sId, String fId);
 	public Seance addSalle(String sId, String saId);
-	public List<Seance> findBySeanceByTitreFilm(String titre);
 	public float findRecetteSeance(String id);
 	public int findPlacesRestantesSeance(String id);
 	public List<Seance> findByDateBetween(LocalDateTime min, LocalDateTime max);
@@ -26,7 +25,8 @@ public interface SeanceService {
 	public void deleteById(String id);
 	public List<Seance> findAllByFilmGenre(String genre);
 	public List<Seance> findAllByFilmAgeLimite(int age);
-	public List<Seance> findAllByType(String type);
 	public List<Seance> rechercheByGenreFilmOrPlageHoraireOrAgeOrTypeSeance(RechercheDTO recherche);
+	public List<Seance> findBySeanceByTitreFilmLike(String titre);
+
 	
 }

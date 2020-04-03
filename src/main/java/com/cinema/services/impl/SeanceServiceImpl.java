@@ -5,7 +5,6 @@ import java.time.LocalDateTime;
 import java.time.Period;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -150,11 +149,9 @@ public class SeanceServiceImpl implements SeanceService {
 	 * Recherche toutes les seances en fonction du titre du film
 	 */
 	@Override
-	public List<Seance> findBySeanceByTitreFilm(String titre) {
-		List<Seance> res = this.repo.findAll()
-				.stream().filter(sea -> sea.getFilm().getTitre()
-				.equals(titre)).collect(Collectors.toList());
-		return res;
+	public List<Seance> findBySeanceByTitreFilmLike(String titre) {
+		List<Film> films = this.serviceF.findByTitreLike(titre);
+		return this.repo.findAllByFilmIn(films);
 		
 	}
 
@@ -195,7 +192,7 @@ public class SeanceServiceImpl implements SeanceService {
 	@Override
 	public float recetteFilm(Film f) {
 		float res=0.00f;
-		List<Seance> seance = this.findBySeanceByTitreFilm(f.getTitre());
+		List<Seance> seance = this.findBySeanceByTitreFilmLike(f.getTitre());
 		for(Seance s : seance)
 		{
 			res+=(float) s.getClients().stream().mapToDouble(se -> se.getPrix()).sum();
@@ -233,15 +230,6 @@ public class SeanceServiceImpl implements SeanceService {
 		{
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Aucun film n'a d'âge limite à : " + age + " ans");
 		}
-	}
-
-	/*
-	 * recherche les seances par type
-	 */
-	@Override
-	public List<Seance> findAllByType(String type) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 
@@ -309,6 +297,9 @@ public class SeanceServiceImpl implements SeanceService {
 		return prixFinal;
 	}
 
+	/*
+	 * Recherche en fonction de critères de recherche
+	 */
 	@Override
 	public List<Seance> rechercheByGenreFilmOrPlageHoraireOrAgeOrTypeSeance(RechercheDTO recherche) {
 		return this.repo.rechercheByGenreFilmOrPlageHoraireOrAgeOrTypeSeance(recherche);

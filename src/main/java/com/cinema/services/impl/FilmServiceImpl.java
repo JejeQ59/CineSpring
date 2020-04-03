@@ -62,14 +62,8 @@ public class FilmServiceImpl implements FilmService {
 	}
 
 	@Override
-	public Optional<Film> findByTitre(String titre) {
-		if(this.repo.findAllByTitre(titre).isPresent()) {
-			return this.repo.findAllByTitre(titre);
-		}
-		else
-		{
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "le film avec le titre: " + titre + " n'existe pas");
-		}
+	public List<Film> findByTitreLike(String titre) {
+		return this.repo.findAllByTitreLike(titre);
 	}
 	
 	@Override

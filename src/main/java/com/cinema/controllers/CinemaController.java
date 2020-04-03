@@ -18,6 +18,9 @@ public class CinemaController {
 	@Autowired
 	private CinemaDTOService service;
 	
+	/**
+	 Permet d'ajouter un cinema et d'affilier une salle à un cinéma 
+	  */
 	@PostMapping("")
 	public CinemaDTO save(@RequestBody CinemaDTO cinema) {
 		return this.service.save(cinema);
