@@ -4,7 +4,9 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.cinema.models.Assister;
 import com.cinema.repositories.AssisterRepository;
@@ -29,7 +31,13 @@ public class AssisterServiceImpl implements AssisterService {
 
 	@Override
 	public Optional<Assister> findById(String id) {
-		return this.repo.findById(id);
+		if(this.repo.findById(id).isPresent()) {
+			return this.repo.findById(id);
+		}
+		else
+		{
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "L'objet Assister avec l'id " + id + " n'existe pas");
+		}
 	}
 
 	@Override

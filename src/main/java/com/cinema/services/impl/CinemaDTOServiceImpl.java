@@ -1,5 +1,7 @@
 package com.cinema.services.impl;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,8 +27,9 @@ public class CinemaDTOServiceImpl implements CinemaDTOService {
 		this.repo.save(cine);
 		for(Salle s : c.getSalles())
 		{
-			s.setCinema(cine);
-			this.serviceS.save(s);
+			Optional<Salle> salle = this.serviceS.findById(s.getId());
+			salle.get().setCinema(cine);
+			this.serviceS.save(salle.get());
 		}
 		
 		return c;

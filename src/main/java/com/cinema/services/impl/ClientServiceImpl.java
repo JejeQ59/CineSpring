@@ -4,7 +4,9 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.cinema.models.Client;
 import com.cinema.repositories.ClientRepository;
@@ -28,7 +30,15 @@ public class ClientServiceImpl implements ClientService {
 
 	@Override
 	public Optional<Client> findById(String id) {
-		return this.repo.findById(id);
+		if(this.repo.findById(id).isPresent())
+		{
+			return this.repo.findById(id);
+		}
+		else
+		{
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "le client d'id: " + id + " n'existe pas");
+		}
+		
 	}
 
 	@Override

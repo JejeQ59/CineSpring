@@ -34,7 +34,14 @@ public class FilmServiceImpl implements FilmService {
 
 	@Override
 	public Optional<Film> findById(String id) {
-		return this.repo.findById(id);
+		if(this.repo.findById(id).isPresent()) {
+			return this.repo.findById(id);
+		}
+		else
+		{
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "le film avec l'id " + id + " n'existe pas");
+		}
+	
 	}
 
 	@Override
@@ -56,7 +63,13 @@ public class FilmServiceImpl implements FilmService {
 
 	@Override
 	public Optional<Film> findByTitre(String titre) {
-		return this.repo.findAllByTitre(titre);
+		if(this.repo.findAllByTitre(titre).isPresent()) {
+			return this.repo.findAllByTitre(titre);
+		}
+		else
+		{
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "le film avec le titre: " + titre + " n'existe pas");
+		}
 	}
 	
 	@Override
@@ -68,15 +81,7 @@ public class FilmServiceImpl implements FilmService {
 	public float findRecette(String id) {
 		float res=0;
 		Optional<Film> film = this.repo.findById(id);
-		if(film.isPresent())
-		{
-			res = this.serviceS.recetteFilm(film.get());
-		}
-		else
-		{
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "le film d'id: " + id + " n'existe pas");
-		}
-		
+		res = this.serviceS.recetteFilm(film.get());
 		return res;
 	}
 

@@ -231,25 +231,10 @@ public class SeanceServiceImpl implements SeanceService {
 	public Seance addSalle(String sId, String saId) {
 		Seance res = null;
 		Optional<Seance> s = this.repo.findById(sId);
-		
-		if(s.isPresent())
-		{
-			Optional<Salle> sa =this.serviceS.findById(saId);
-			if(sa.isPresent()) { 
-				res = s.get();
-				res.setSalle(sa.get());
-				this.update(res);
-			}
-			else
-			{
-				throw new ResponseStatusException(HttpStatus.NOT_FOUND, "la salle d'id: " + saId + " n'existe pas");
-			}
-		}
-		else
-		{
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "la seance d'id: " + sId + " n'existe pas");
-		}
-		
+		Optional<Salle> sa =this.serviceS.findById(saId);
+		res = s.get();
+		res.setSalle(sa.get());
+		this.update(res);
 		return res;
 	}
 
@@ -272,16 +257,7 @@ public class SeanceServiceImpl implements SeanceService {
 	public float findRecetteSeance(String id) {
 		Optional<Seance> s = this.repo.findById(id);
 		float res = 0;
-		
-		if(s.isPresent())
-		{
-			res = (float) s.get().getClients().stream().mapToDouble(se -> se.getPrix()).sum();
-		}
-		else
-		{
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "la seance d'id: " + id + " n'existe pas");
-		}
-		
+		res= (float) s.get().getClients().stream().mapToDouble(se -> se.getPrix()).sum();
 		return res;
 	}
 
@@ -292,20 +268,10 @@ public class SeanceServiceImpl implements SeanceService {
 	public int findPlacesRestantesSeance(String id) {
 		Optional<Seance> s = this.repo.findById(id);
 		int res = 0;
-		
-		if(s.isPresent())
+		if(s.get().getSalle()!=null)
 		{
-		
-			if(s.get().getSalle()!=null)
-			{
 				res = s.get().getSalle().getPlace() - s.get().getClients().size();
-			}
 		}
-		else
-		{
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "la seance d'id: " + id + " n'existe pas");
-		}
-		
 		return res;
 	}
 
