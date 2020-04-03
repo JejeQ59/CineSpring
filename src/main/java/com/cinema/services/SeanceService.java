@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
+import com.cinema.dto.RechercheDTO;
 import com.cinema.models.Film;
 import com.cinema.models.Seance;
 
@@ -25,5 +26,7 @@ public interface SeanceService {
 	public void deleteById(String id);
 	public List<Seance> findAllByFilmGenre(String genre);
 	public List<Seance> findAllByFilmAgeLimite(int age);
+	public List<Seance> findAllByType(String type);
+	public List<Seance> rechercheByGenreFilmOrPlageHoraireOrAgeOrTypeSeance(RechercheDTO recherche);
 	
 }

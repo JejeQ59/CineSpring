@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.cinema.dto.RechercheDTO;
 import com.cinema.models.Assister;
 import com.cinema.models.Client;
 import com.cinema.models.Film;
@@ -84,116 +85,38 @@ public class SeanceServiceImpl implements SeanceService {
 		Optional<Seance> seance = this.repo.findById(sId);
 		Assister ass = new Assister();
 		float prix;
-
-		if(seance.isPresent()) {
-			Optional<Client> client = this.serviceC.findById(cId);
-			sea = seance.get();
-			if(seance.get()==null)
+		Optional<Client> client = this.serviceC.findById(cId);
+		sea = seance.get();
+		if(seance.get()==null)
+		{
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "la salle n'existe pas");
+		}
+		else
+		{
+			if(salleRempli(sea))
 			{
-				throw new ResponseStatusException(HttpStatus.NOT_FOUND, "la salle n'existe pas");
-			}
-			else
-			{
-				if(salleRempli(sea))
-				{
-					throw new ResponseStatusException(HttpStatus.FORBIDDEN, "le nombre de client de la salle est déjà atteint");
-				}
-			}	
-			
-			if(client.isPresent())
-			{
-				
-				Client cli = client.get();	
-				if(testAge(sea, cli))
-				{
-					prix = calculPrixSeance(sea)- calculReduction(cli);
-					ass.setPrix(prix);
-					ass.setClient(cli);
-					sea.getClients().add(ass);
-					this.serviceA.save(ass);
-					this.save(sea);
-				}
-				else
-				{
-					throw new ResponseStatusException(HttpStatus.FORBIDDEN, "le client n'a pas l'âge pour voir le film");
-				}
-			}
-			else
-			{
-				throw new ResponseStatusException(HttpStatus.NOT_FOUND, "le client d'id: " + cId + " n'existe pas");
+				throw new ResponseStatusException(HttpStatus.FORBIDDEN, "le nombre de client de la salle est déjà atteint");
 			}
 		}	
-		else {
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "la séance d'id: " + sId + " n'existe pas");
+
+		Client cli = client.get();	
+		if(testAge(sea, cli))
+		{
+			prix = calculPrixSeance(sea)- calculReduction(cli);
+			ass.setPrix(prix);
+			ass.setClient(cli);
+			sea.getClients().add(ass);
+			this.serviceA.save(ass);
+			this.save(sea);
+		}
+		else
+		{
+			throw new ResponseStatusException(HttpStatus.FORBIDDEN, "le client n'a pas l'âge pour voir le film");
 		}
 
 		return sea;
 	}
-
-	/*
-	 * test age du client
-	 */
-	private boolean testAge(Seance sea, Client cli) {
-		boolean test = false;
-		if(Period.between(cli.getNaissance(), LocalDate.now()).getYears() 
-				> sea.getFilm().getAgeLimite()) {
-			test = true;
-		}
-		
-		return test;
-	}
-
-	private boolean salleRempli(Seance sea) {
-		if(sea.getSalle().getPlace() == sea.getClients().size()) {
-			return true;
-		}
-		else
-		{
-			return false;
-		}
-	}
-
-	/*
-	 * calcul de la reduction en fonction de l'age
-	 */
-	private float calculReduction(Client cli) {
-		float reduction = 0;
-		if(cli.isEtudient())
-		{
-			reduction = 2;
-		}
-		
-		if(Period.between(cli.getNaissance(), LocalDate.now()).getYears() < 10) {
-			reduction = 4;
-		}
-		return reduction;
-	}
-
-	/*
-	 * Calcul du prix de la seance pour le client
-	 */
-	private float calculPrixSeance(Seance seance) {
-
-		float prixBase = 10;
-		float prixFinal;
-
-		switch(seance.getType()) {
-		case "3D":
-			prixFinal = prixBase + 3;
-			break;
-		case "IMAX":
-			prixFinal = prixBase + 6;
-			break;
-		case "4DX":
-			prixFinal = prixBase + 8;
-			break;
-		default:
-			prixFinal = prixBase;
-		}
-
-		return prixFinal;
-	}
-
+	
 	/*
 	 * Ajout d'un film sur une séance
 	 */
@@ -201,25 +124,10 @@ public class SeanceServiceImpl implements SeanceService {
 	public Seance addFilm(String sId, String fId) {
 		Seance res = null;
 		Optional<Seance> s = this.repo.findById(sId);
-		
-		if(s.isPresent())
-		{
-			Optional<Film> f =this.serviceF.findById(fId);
-			if(f.isPresent()) { 
-				res = s.get();
-				res.setFilm(f.get());
-				this.update(res);
-			}
-			else
-			{
-				throw new ResponseStatusException(HttpStatus.NOT_FOUND, "le film d'id: " + fId + " n'existe pas");
-			}
-		}
-		else
-		{
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "la seance d'id: " + sId + " n'existe pas");
-		}
-		
+		Optional<Film> f =this.serviceF.findById(fId);
+		res = s.get();
+		res.setFilm(f.get());
+		this.update(res);
 		return res;
 	}
 	
@@ -295,6 +203,9 @@ public class SeanceServiceImpl implements SeanceService {
 		return res;
 	}
 
+	/*
+	 * Recherche les seances par genre de film
+	 */
 	@Override
 	public List<Seance> findAllByFilmGenre(String genre) {
 		List<Film> films = this.serviceF.findAllByGenre(genre);
@@ -308,6 +219,9 @@ public class SeanceServiceImpl implements SeanceService {
 		}
 	}
 
+	/*
+	 *  Recherche les seances par age limite
+	 */
 	@Override
 	public List<Seance> findAllByFilmAgeLimite(int age) {
 		List<Film> films = this.serviceF.findAllByAgeLimite(age);
@@ -321,5 +235,85 @@ public class SeanceServiceImpl implements SeanceService {
 		}
 	}
 
+	/*
+	 * recherche les seances par type
+	 */
+	@Override
+	public List<Seance> findAllByType(String type) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	/*
+	 * test age du client
+	 */
+	private boolean testAge(Seance sea, Client cli) {
+		boolean test = false;
+		if(Period.between(cli.getNaissance(), LocalDate.now()).getYears() 
+				> sea.getFilm().getAgeLimite()) {
+			test = true;
+		}
+		
+		return test;
+	}
+
+	private boolean salleRempli(Seance sea) {
+		if(sea.getSalle().getPlace() == sea.getClients().size()) {
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+
+	/*
+	 * calcul de la reduction en fonction de l'age
+	 */
+	private float calculReduction(Client cli) {
+		float reduction = 0;
+		if(cli.isEtudient())
+		{
+			reduction = 2;
+		}
+		
+		if(Period.between(cli.getNaissance(), LocalDate.now()).getYears() < 10) {
+			reduction = 4;
+		}
+		return reduction;
+	}
+
+	/*
+	 * Calcul du prix de la seance pour le client
+	 */
+	private float calculPrixSeance(Seance seance) {
+
+		float prixBase = 10;
+		float prixFinal;
+
+		switch(seance.getType()) {
+		case "3D":
+			prixFinal = prixBase + 3;
+			break;
+		case "IMAX":
+			prixFinal = prixBase + 6;
+			break;
+		case "4DX":
+			prixFinal = prixBase + 8;
+			break;
+		default:
+			prixFinal = prixBase;
+		}
+
+		return prixFinal;
+	}
+
+	@Override
+	public List<Seance> rechercheByGenreFilmOrPlageHoraireOrAgeOrTypeSeance(RechercheDTO recherche) {
+		return this.repo.rechercheByGenreFilmOrPlageHoraireOrAgeOrTypeSeance(recherche);
+	}
+
+	
 	
 }

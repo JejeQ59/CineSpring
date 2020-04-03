@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.cinema.dto.RechercheDTO;
 import com.cinema.models.Seance;
 import com.cinema.services.SeanceService;
 
@@ -102,6 +103,14 @@ public class SeanceController {
 		return this.service.findAllByFilmAgeLimite(age);
 	}
 		
+	@GetMapping("/type/{type}")
+	public List<Seance> findAllByType(@PathVariable String type) {
+		return this.service.findAllByType(type);
+	}
 	
+	@GetMapping("/recherche")
+	public List<Seance> rechercheByGenreFilmOrPlageHoraireOrAgeOrTypeSeance(@RequestBody RechercheDTO recherche) {
+		return this.service.rechercheByGenreFilmOrPlageHoraireOrAgeOrTypeSeance(recherche);
+	}
 	
 }

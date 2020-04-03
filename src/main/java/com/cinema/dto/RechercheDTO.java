@@ -1,5 +1,6 @@
 package com.cinema.dto;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,9 +17,12 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class CinemaDTO {
+public class RechercheDTO {
 	
-	private Cinema cinema;
-	private List<Salle> salles = new ArrayList<>();
+	private String genre;
+	private LocalDateTime min;
+	private LocalDateTime max;
+	private int ageLimite;
+	private String type;
 
 }
