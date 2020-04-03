@@ -73,15 +73,19 @@ public class FilmServiceImpl implements FilmService {
 
 	@Override
 	public float findRecette(String id) {
-		float res=0;
 		Optional<Film> film = this.repo.findById(id);
-		res = this.serviceS.recetteFilm(film.get());
-		return res;
+		return this.serviceS.recetteFilm(film.get());
 	}
 
 	@Override
 	public List<Film> findAllByAgeLimite(int age) {
 		return this.repo.findAllByAgeLimite(age);
+	}
+
+	@Override
+	public float findMoyenne(String id) {
+		Optional<Film> film = this.repo.findById(id);
+		return this.serviceS.moyenneFilm(film.get());
 	}
 	
 	

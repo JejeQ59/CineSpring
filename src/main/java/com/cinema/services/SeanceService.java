@@ -22,11 +22,14 @@ public interface SeanceService {
 	public int findPlacesRestantesSeance(String id);
 	public List<Seance> findByDateBetween(LocalDateTime min, LocalDateTime max);
 	public float recetteFilm(Film f);
+	public float moyenneFilm(Film f);
 	public void deleteById(String id);
 	public List<Seance> findAllByFilmGenre(String genre);
 	public List<Seance> findAllByFilmAgeLimite(int age);
 	public List<Seance> rechercheByGenreFilmOrPlageHoraireOrAgeOrTypeSeance(RechercheDTO recherche);
 	public List<Seance> findBySeanceByTitreFilmLike(String titre);
+	public Seance addNote(String sId, String aId, Integer note);
+	
 
 	
 }

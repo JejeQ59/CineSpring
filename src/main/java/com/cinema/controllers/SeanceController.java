@@ -57,36 +57,57 @@ public class SeanceController {
 		this.service.delete(s);
 	}
 	
-	@PutMapping("{sId}/assister/{aId}")
+	/**
+	 * Permet d'ajouter un client à une seance
+	 */
+	@PutMapping("{sId}/assistes/{aId}")
 	public Seance addClient(@PathVariable String sId, @PathVariable String aId) {
 		return this.service.addClient(sId, aId);
 	}
 	
+	/**
+	 * Permet d'ajouter un film à une seance
+	 */
 	@PutMapping("{sId}/films/{fId}")
 	public Seance addFilm(@PathVariable String sId, @PathVariable String fId) {
 		return this.service.addFilm(sId, fId);
 	}
 	
+	/**
+	 * Permet d'ajouter une salle à une seance
+	 */
 	@PutMapping("{sId}/salles/{saId}")
 	public Seance addSalle(@PathVariable String sId, @PathVariable String saId) {
 		return this.service.addSalle(sId, saId);
 	}
 	
+	/**
+	 * Permet de rechercher le titre d'un film sur les seances
+	 */
 	@GetMapping("/titre/{titre}")
 	public List<Seance> findSeanceByTitreFilm(@PathVariable String titre) {
 		return this.service.findBySeanceByTitreFilmLike(titre);
 	}
 	
+	/**
+	 * Permet de connaître la recette d'un film sur les seances
+	 */
 	@GetMapping("/{id}/recette")
 	public float findRecetteSeance(@PathVariable String id) {
 		return this.service.findRecetteSeance(id);
 	}
 	
+	/**
+	 * Permet de savoir le nombre de places restantes d'une salle
+	 */
 	@GetMapping("/{id}/places")
 	public int findPlacesRestantesSeance(@PathVariable String id) {
 		return this.service.findPlacesRestantesSeance(id);
 	}
 	
+	/**
+	 * Permet de connaître les seances entre 2 périodes
+	 */
 	@GetMapping("/horaires/{min}/{max}")
 	public List<Seance> findByDateBetween(@PathVariable LocalDateTime min, @PathVariable LocalDateTime max) {
 		return this.service.findByDateBetween(min, max);
@@ -103,9 +124,22 @@ public class SeanceController {
 		return this.service.findAllByFilmAgeLimite(age);
 	}
 	
+	/**
+	 * Permet de rechercher des seances en fonction de différents critères
+	 */
 	@GetMapping("/recherche")
 	public List<Seance> rechercheByGenreFilmOrPlageHoraireOrAgeOrTypeSeance(@RequestBody RechercheDTO recherche) {
 		return this.service.rechercheByGenreFilmOrPlageHoraireOrAgeOrTypeSeance(recherche);
 	}
+	
+	/**
+	 * Permet d'ajouter une note au film
+	 */
+	@PutMapping("{sId}/assiste/{aId}/note/{note}")
+	public Seance addNote(@PathVariable String sId, @PathVariable String aId, @PathVariable Integer note) {
+		return this.service.addNote(sId, aId, note);
+	}
+	
+	
 	
 }

@@ -304,6 +304,37 @@ public class SeanceServiceImpl implements SeanceService {
 	public List<Seance> rechercheByGenreFilmOrPlageHoraireOrAgeOrTypeSeance(RechercheDTO recherche) {
 		return this.repo.rechercheByGenreFilmOrPlageHoraireOrAgeOrTypeSeance(recherche);
 	}
+	
+	/*
+	*	Recherche la moyenne d'un film
+	*/
+	@Override
+	public float moyenneFilm(Film f) {
+		float res=0.00f;
+		List<Seance> seance = this.findBySeanceByTitreFilmLike(f.getTitre());
+		for(Seance s : seance)
+		{
+			res+= s.getClients().stream().filter(se -> se.getNote()!=null).mapToDouble(se -> se.getNote()).average().getAsDouble();
+		}
+		return res;
+	}
+
+	/**
+	 * ajout d'une note 
+	 */
+	@Override
+	public Seance addNote(String sId, String aId, Integer note) {
+		Seance res = null;
+		Optional<Seance> s = this.repo.findById(sId);
+		Optional<Assister> sa =this.serviceA.findById(aId);
+		sa.get().setNote(note);
+		this.serviceA.update(sa.get());
+		res = s.get();
+		this.update(res);
+		return res;
+	}
+	
+	
 
 	
 	

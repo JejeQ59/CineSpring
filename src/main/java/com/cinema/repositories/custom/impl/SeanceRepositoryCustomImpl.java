@@ -19,6 +19,7 @@ public class SeanceRepositoryCustomImpl implements SeanceRepositoryCustom {
 	@Autowired
 	private MongoTemplate template;
 
+	/** Recherche en fonction de critère de recherche sur le genre de séance, ageLimite du film **/
 	@Override
 	public List<Seance> rechercheByGenreFilmOrPlageHoraireOrAgeOrTypeSeance(RechercheDTO recherche) {
 		List<Seance> res;

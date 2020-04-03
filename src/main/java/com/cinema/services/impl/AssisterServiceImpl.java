@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.cinema.models.Assister;
+import com.cinema.models.Seance;
 import com.cinema.repositories.AssisterRepository;
 import com.cinema.services.AssisterService;
 
@@ -45,10 +46,22 @@ public class AssisterServiceImpl implements AssisterService {
 		return this.repo.save(a);
 	}
 
+	
 	@Override
-	public void delete(String id) {
+	public void delete(Assister a) {
+		this.repo.delete(a);
+		
+	}
+
+	@Override
+	public void deleteById(String id) {
 		this.repo.deleteById(id);
 		
+	}
+
+	@Override
+	public Seance addNote(String aId, Integer note) {
+		return null;
 	}
 	
 

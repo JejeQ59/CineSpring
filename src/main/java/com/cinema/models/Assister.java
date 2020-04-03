@@ -17,5 +17,6 @@ public class Assister {
 	private String id;
 	private float prix;
 	private Client client;
+	private Integer note;
 
 }

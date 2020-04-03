@@ -14,35 +14,36 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.cinema.models.Film;
-import com.cinema.services.FilmService;
+import com.cinema.models.Assister;
+import com.cinema.models.Seance;
+import com.cinema.services.AssisterService;
 
 @RestController
 @CrossOrigin
-@RequestMapping("films")
-public class FilmController {
+@RequestMapping("assistes")
+public class AssisterController {
 	
 	@Autowired
-	private FilmService service;
+	private AssisterService service;
 	
 	@PostMapping("")
-	public Film save(@RequestBody Film entity) {
+	public Assister save(@RequestBody Assister entity) {
 		return this.service.save(entity);
 	}
 	
 	@GetMapping("")
-	public List<Film> findAll() {
+	public List<Assister> findAll() {
 		return this.service.findAll();
 	}
 	
 	@GetMapping("{id}")
-	public Optional<Film> findById(@PathVariable String id) {
+	public Optional<Assister> findById(@PathVariable String id) {
 		return this.service.findById(id);
 	}
 	
 	@PutMapping("")
-	public Film update(@RequestBody Film f) {
-		return this.service.update(f);
+	public Assister update(@RequestBody Assister a) {
+		return this.service.update(a);
 	}
 
 	@DeleteMapping("{id}")
@@ -51,24 +52,12 @@ public class FilmController {
 	}
 	
 	@DeleteMapping("")
-	public void delete(@RequestBody Film f) {
-		this.service.delete(f);
+	public void delete(@RequestBody Assister a) {
+		this.service.delete(a);
 	}
 	
-	/**
-	 * Calcul de la recette d'un film sur toutes les séances
-	 */
-	@GetMapping("/{id}/recette")
-	public float findRecette(@PathVariable String id) {
-		return this.service.findRecette(id);
+	@PutMapping("{aId}/note/{note}")
+	public Seance addNote(@PathVariable String aId, @PathVariable Integer note) {
+		return this.service.addNote(aId, note);
 	}
-	
-	/**
-	 * Calcul de la recette d'un film sur toutes les séances
-	 */
-	@GetMapping("/{id}/moyenne")
-	public float findMoyenneNote(@PathVariable String id) {
-		return this.service.findMoyenne(id);
-	}
-	
 }
