@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.cinema.models.Assister;
-import com.cinema.models.Seance;
 import com.cinema.repositories.AssisterRepository;
 import com.cinema.services.AssisterService;
 
@@ -60,8 +59,11 @@ public class AssisterServiceImpl implements AssisterService {
 	}
 
 	@Override
-	public Seance addNote(String aId, Integer note) {
-		return null;
+	public Assister addNote(String aId, Integer note) {
+		Optional<Assister> sa =this.repo.findById(aId);
+		sa.get().setNote(note);
+		this.update(sa.get());
+		return sa.get();
 	}
 	
 

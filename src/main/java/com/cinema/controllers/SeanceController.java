@@ -60,7 +60,7 @@ public class SeanceController {
 	/**
 	 * Permet d'ajouter un client à une seance
 	 */
-	@PutMapping("{sId}/assistes/{aId}")
+	@PutMapping("{sId}/assister/{aId}")
 	public Seance addClient(@PathVariable String sId, @PathVariable String aId) {
 		return this.service.addClient(sId, aId);
 	}
@@ -84,7 +84,7 @@ public class SeanceController {
 	/**
 	 * Permet de rechercher le titre d'un film sur les seances
 	 */
-	@GetMapping("/titre/{titre}")
+	@GetMapping("titre/{titre}")
 	public List<Seance> findSeanceByTitreFilm(@PathVariable String titre) {
 		return this.service.findBySeanceByTitreFilmLike(titre);
 	}
@@ -92,7 +92,7 @@ public class SeanceController {
 	/**
 	 * Permet de connaître la recette d'un film sur les seances
 	 */
-	@GetMapping("/{id}/recette")
+	@GetMapping("{id}/recette")
 	public float findRecetteSeance(@PathVariable String id) {
 		return this.service.findRecetteSeance(id);
 	}
@@ -100,7 +100,7 @@ public class SeanceController {
 	/**
 	 * Permet de savoir le nombre de places restantes d'une salle
 	 */
-	@GetMapping("/{id}/places")
+	@GetMapping("{id}/places")
 	public int findPlacesRestantesSeance(@PathVariable String id) {
 		return this.service.findPlacesRestantesSeance(id);
 	}
@@ -108,18 +108,21 @@ public class SeanceController {
 	/**
 	 * Permet de connaître les seances entre 2 périodes
 	 */
-	@GetMapping("/horaires/{min}/{max}")
+	@GetMapping("horaire/{min}/{max}")
 	public List<Seance> findByDateBetween(@PathVariable LocalDateTime min, @PathVariable LocalDateTime max) {
 		return this.service.findByDateBetween(min, max);
 	}
 	
 	
-	@GetMapping("/genre/{genre}")
+	@GetMapping("genre/{genre}")
 	public List<Seance> findAllByFilmGenre(@PathVariable String genre) {
 		return this.service.findAllByFilmGenre(genre);
 	}
 	
-	@GetMapping("/age/{age}")
+	/*
+	 * Permet le test de l'age limite
+	 */
+	@GetMapping("age/{age}")
 	public List<Seance> findAllByFilmAgeLimite(@PathVariable int age) {
 		return this.service.findAllByFilmAgeLimite(age);
 	}
@@ -127,19 +130,18 @@ public class SeanceController {
 	/**
 	 * Permet de rechercher des seances en fonction de différents critères
 	 */
-	@GetMapping("/recherche")
+	@GetMapping("recherche")
 	public List<Seance> rechercheByGenreFilmOrPlageHoraireOrAgeOrTypeSeance(@RequestBody RechercheDTO recherche) {
 		return this.service.rechercheByGenreFilmOrPlageHoraireOrAgeOrTypeSeance(recherche);
 	}
 	
-	/**
-	 * Permet d'ajouter une note au film
+	/*
+	 * Permet d'ajouter une note au film de la séance
 	 */
-	@PutMapping("{sId}/assiste/{aId}/note/{note}")
-	public Seance addNote(@PathVariable String sId, @PathVariable String aId, @PathVariable Integer note) {
-		return this.service.addNote(sId, aId, note);
+	@PutMapping("{aId}/assister/{assId}/{note}")
+	public Seance addNote(@PathVariable String aId, @PathVariable String assId, @PathVariable int note) {
+		return this.service.addNote(aId, assId, note);
 	}
-	
 	
 	
 }

@@ -314,28 +314,32 @@ public class SeanceServiceImpl implements SeanceService {
 		List<Seance> seance = this.findBySeanceByTitreFilmLike(f.getTitre());
 		for(Seance s : seance)
 		{
-			res+= s.getClients().stream().filter(se -> se.getNote()!=null).mapToDouble(se -> se.getNote()).average().getAsDouble();
+			res+= s.getClients().stream().filter(se -> se.getNote()!=null).mapToDouble(se -> se.getNote()).average().orElse(-0);
+		}
+		
+		if(res <= 0)
+		{
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Le film n'a aucune note");
 		}
 		return res;
 	}
 
-	/**
-	 * ajout d'une note 
+	/*
+	 * ajout d'une note client sur le film
 	 */
 	@Override
-	public Seance addNote(String sId, String aId, Integer note) {
-		Seance res = null;
-		Optional<Seance> s = this.repo.findById(sId);
-		Optional<Assister> sa =this.serviceA.findById(aId);
-		sa.get().setNote(note);
-		this.serviceA.update(sa.get());
-		res = s.get();
-		this.update(res);
-		return res;
+	public Seance addNote(String aId, String assId, Integer note) {
+		if(note < 1 || note > 10)
+		{
+			throw new ResponseStatusException(HttpStatus.FORBIDDEN, "la note doit être comprise entre 1 et 10");
+		}
+		Optional<Seance> s = this.repo.findById(aId);
+		Optional<Assister> ass = this.serviceA.findById(assId);
+		ass.get().setNote(note);
+		this.serviceA.update(ass.get());
+		this.update(s.get());
+		return s.get();
 	}
-	
-	
-
 	
 	
 }

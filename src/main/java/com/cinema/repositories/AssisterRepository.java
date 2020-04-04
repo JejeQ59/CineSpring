@@ -6,4 +6,5 @@ import com.cinema.models.Assister;
 
 public interface AssisterRepository extends MongoRepository<Assister, String> {
 
+
 }

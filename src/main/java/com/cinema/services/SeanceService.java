@@ -28,8 +28,6 @@ public interface SeanceService {
 	public List<Seance> findAllByFilmAgeLimite(int age);
 	public List<Seance> rechercheByGenreFilmOrPlageHoraireOrAgeOrTypeSeance(RechercheDTO recherche);
 	public List<Seance> findBySeanceByTitreFilmLike(String titre);
-	public Seance addNote(String sId, String aId, Integer note);
-	
-
+	public Seance addNote(String aId, String assId, Integer note);
 	
 }

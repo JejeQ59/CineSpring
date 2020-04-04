@@ -58,7 +58,7 @@ public class FilmController {
 	/**
 	 * Calcul de la recette d'un film sur toutes les séances
 	 */
-	@GetMapping("/{id}/recette")
+	@GetMapping("{id}/recette")
 	public float findRecette(@PathVariable String id) {
 		return this.service.findRecette(id);
 	}
@@ -66,7 +66,7 @@ public class FilmController {
 	/**
 	 * Calcul de la recette d'un film sur toutes les séances
 	 */
-	@GetMapping("/{id}/moyenne")
+	@GetMapping("{id}/moyenne")
 	public float findMoyenneNote(@PathVariable String id) {
 		return this.service.findMoyenne(id);
 	}
